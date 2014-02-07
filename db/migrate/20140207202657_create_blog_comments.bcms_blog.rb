@@ -1,3 +1,4 @@
+# This migration comes from bcms_blog (originally 20090415000002)
 class CreateBlogComments < ActiveRecord::Migration
   def self.up
     create_versioned_table :blog_comments do |t|

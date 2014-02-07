@@ -1,3 +1,4 @@
+# This migration comes from bcms_blog (originally 20090415000000)
 require 'pp'
 
 Cms::Page # trigger auto-loading
