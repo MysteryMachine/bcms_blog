@@ -1,0 +1,9 @@
+%div.container-fluid.team-page
+	%div.row
+		%div.col-md-2.thumbnail
+			= image_tag attachment_path_for(content_block.picture)
+		%div.col-md-10
+			%h4.team-page
+				= content_block.name
+				%small.team-page &mdash;
+			%summary.team-page= content_block.bio

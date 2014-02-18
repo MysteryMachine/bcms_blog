@@ -5,7 +5,6 @@ module BcmsBlog
     def build_block
       super
       ensure_blog_editable
-      @block.author = current_user
     end
   
     def load_block

@@ -9,7 +9,7 @@ module BcmsBlog
 
     belongs_to :blog
     belongs_to_category
-    belongs_to :author, :class_name => "Cms::User"
+    belongs_to :author, :class_name => "BcmsBlog::Author"
     has_many :comments, :class_name => "BlogComment", :foreign_key => "post_id"
 
     before_validation :set_slug
@@ -103,6 +103,10 @@ module BcmsBlog
     # Return true if this model has an attachment
     def attachment
       !file.blank?
+    end
+    
+    def not_article
+      author_id != 0
     end
   end
 end
