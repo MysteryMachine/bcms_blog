@@ -1,4 +1,3 @@
-<%= render_breadcrumbs :from_top => 1%>
 <%
   # _counter is defined only if we pass :collection to the partial
   if defined?(blog_post_counter)
@@ -7,31 +6,36 @@
     showing_individual_post = true
     blog_post_counter = 0
   end
-%>
-<div id="blog_post_<%= blog_post.id %>" class="blog_post">
+%><div itemprop="<%=showing_individual_post ? 'blogPost' : 'blogPosts' %>">
+<div id="blog_post_<%= blog_post.id %>" class="blog_post" itemscope itemtype="BlogPosting">
   <% if blog_post.attachment %>
     <div class="image">
       <%= image_tag blog_post.attachment.file_path %>
     </div>
   <% end %>
   <% href = _blog_post_path(blog_post) %>
-  <h2><%=blog_post.name%></h2>
+  <h2 itemprop="name"><%=blog_post.name%></h2>
   
-  <div class="date"><%= blog_post.published_at.to_s(:long) %></div>
+  <div class="date" itemprop="datePublished"><%= blog_post.published_at.to_s(:long) %></div>
   
   <div class="body">
     <% if showing_individual_post or blog_post.summary.blank? %>
-      <%= blog_post.body.html_safe %>
+      <div itemprop="articleBody"><%= blog_post.body.html_safe %></div>
 			<%if blog_post.not_article%>
-				<%= render :partial => "bcms_blog/authors/render", :locals => {:content_block => blog_post.author}%>
+        <div itemprop="author">
+				  <%= render :partial => "bcms_blog/authors/render", :locals => {:content_block => blog_post.author}%>
+        </div>
 			<% end %>
 		<% else %>
-      <%= blog_post.summary %>
+      <div itemprop="description">
+        <%= blog_post.summary %>
+      </div>
       <p class="read_more">
+        <meta itemprop="url" content="<%=href%>"/>
         <%= link_to 'Read More »', href %>
       </p>
     <% end %>
-  </div>
+  </div></div>
   
   <div class="meta">
     <% unless blog_post.category_id.blank? %>
