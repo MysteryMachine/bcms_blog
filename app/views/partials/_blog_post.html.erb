@@ -7,13 +7,18 @@
     blog_post_counter = 0
   end
 %><div itemprop="<%=showing_individual_post ? 'blogPost' : 'blogPosts' %>">
-<div id="blog_post_<%= blog_post.id %>" class="blog_post" itemscope itemtype="BlogPosting">
+<div id="blog_post_<%= blog_post.id %>" itemscope itemtype="http://schema.org/BlogPosting"> <div class= "blog_post">
   <% if blog_post.attachment %>
     <div class="image">
       <%= image_tag blog_post.attachment.file_path %>
     </div>
   <% end %>
   <% href = _blog_post_path(blog_post) %>
+	<% if showing_individual_post %>
+	<div itemscope itemtype="http://schema.org/WebPage"><div itemprop="breadcrumb">
+	<%= render_breadcrumbs :from_top => 1%>
+	</div></div>
+	<%end%>
   <h2 itemprop="name"><%=blog_post.name%></h2>
   
   <div class="date" itemprop="datePublished"><%= blog_post.published_at.to_s(:long) %></div>
@@ -35,17 +40,18 @@
         <%= link_to 'Read More »', href %>
       </p>
     <% end %>
-  </div></div>
+  </div>
   
   <div class="meta">
     <% unless blog_post.category_id.blank? %>
+		  <meta itemprop="keywords" content="<%=blog_post.category_name%>">
       Posted in <%= link_to h(blog_post.category_name), _blog_path(blog_post.blog, 'posts_in_category', :category => blog_post.category_name) %>
       <strong>|</strong>
     <% end %>
 
     <% if blog_post.tags.any? %>
       Tags:
-      <span class="tags">
+      <span class="tags" itemprop="keywords">
         <%= blog_post.tags.map{|t| link_to(h(t.name), _blog_path(blog_post.blog, 'posts_with_tag', :tag => t.name)) }.join(", ").html_safe %>
       </span>
       <strong>|</strong>
@@ -60,10 +66,10 @@
   <% if showing_individual_post and comments.any? -%>
     <h2>Comments</h2>
     <% comments.each_with_index do |comment, i| %>
-      <div class="comment <%= 'first' if i == 0 %>">
+      <div class="comment <%= 'first' if i == 0 %>" itemprop="comment">
         <%= h comment.body %>
         <p>&mdash;<%= comment.url.present? ? link_to(h(comment.author), comment.url) : h(comment.author) %></p>
       </div>
     <% end %>
   <% end %>
-</div>
+</div></div></div>
