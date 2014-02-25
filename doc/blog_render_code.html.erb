@@ -1,0 +1,10 @@
+<!-- this file contains the "template code for blogs, code that needs to be inserted into bcms at runtime" !-->
+
+<% page_title @page_title || @blog.name %>
+<div itemprop="breadcrumb">
+<%= render_breadcrumbs :from_top => 1%>
+</div>
+<div itemscope itemtype="http://schema.org/Blog">
+	<meta itemprop="name" content="<%=@blog.name%>">
+	<%= render :partial => "partials/blog_post", :collection => @blog_posts %>
+</div>

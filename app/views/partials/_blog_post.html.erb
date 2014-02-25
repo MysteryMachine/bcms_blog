@@ -1,3 +1,4 @@
+<% bcms_blog = BcmsBlog::Engine.routes.url_helpers %>
 <%
   # _counter is defined only if we pass :collection to the partial
   if defined?(blog_post_counter)
@@ -13,7 +14,7 @@
       <%= image_tag blog_post.attachment.file_path %>
     </div>
   <% end %>
-  <% href = _blog_post_path(blog_post) %>
+  <% href = bcms_blog.blog_post_path(blog_post) %>
 	<% if showing_individual_post %>
 	<div itemscope itemtype="http://schema.org/WebPage"><div itemprop="breadcrumb">
 	<%= render_breadcrumbs :from_top => 1%>
@@ -28,7 +29,7 @@
       <div itemprop="articleBody"><%= blog_post.body.html_safe %></div>
 			<%if blog_post.not_article%>
         <div itemprop="author">
-				  <%= render :partial => "bcms_blog/authors/render", :locals => {:content_block => blog_post.author}%>
+				  <%= render :partial => "bcms_blog/authors/render", :locals => {:content_block => blog_post.author, :link_to_author_page => true}%>
         </div>
 			<% end %>
 		<% else %>
@@ -45,19 +46,19 @@
   <div class="meta">
     <% unless blog_post.category_id.blank? %>
 		  <meta itemprop="keywords" content="<%=blog_post.category_name%>">
-      Posted in <%= link_to h(blog_post.category_name), _blog_path(blog_post.blog, 'posts_in_category', :category => blog_post.category_name) %>
+      Posted in <%= link_to h(blog_post.category_name), bcms_blog.blog_path(blog_post.blog, 'posts_in_category', :category => blog_post.category_name) %>
       <strong>|</strong>
     <% end %>
 
     <% if blog_post.tags.any? %>
       Tags:
       <span class="tags" itemprop="keywords">
-        <%= blog_post.tags.map{|t| link_to(h(t.name), _blog_path(blog_post.blog, 'posts_with_tag', :tag => t.name)) }.join(", ").html_safe %>
+        <%= blog_post.tags.map{|t| link_to(h(t.name), bcms_blog.blog_path(blog_post.blog, 'posts_with_tag', :tag => t.name)) }.join(", ").html_safe %>
       </span>
       <strong>|</strong>
     <% end %>
     
-    <%= link_to h(pluralize(blog_post.comments.published.count, "Comment")), "#{_blog_post_path(blog_post)}#comments" %>
+    <%= link_to h(pluralize(blog_post.comments.published.count, "Comment")), "#{bcms_blog.blog_post_path(blog_post)}#comments" %>
   </div>
   
   <br />

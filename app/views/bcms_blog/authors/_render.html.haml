@@ -1,3 +1,4 @@
+-bcms_blog = BcmsBlog::Engine.routes.url_helpers
 %div.container-fluid.team-page{:itemscope=>true, :itemtype=>"http://schema.org/Person"}
 	%div.row
 		%div.col-md-2.thumbnail
@@ -7,3 +8,5 @@
 				%meta{:itemprop => "name", :content => content_block.name}
 				= content_block.name
 			%summary.team-page{:itemprop => "description"}= content_block.bio
+			-if(link_to_author_page)
+				=link_to "Read more by #{content_block.name}", bcms_blog.authors_page_path(content_block.name)
